@@ -1,0 +1,138 @@
+/*==============================================================*/
+/* Nom de SGBD :  Microsoft Access 2000                         */
+/* Date de création :  13/09/2017 09:10:19                      */
+/*==============================================================*/
+
+
+alter table APPARTIENT
+   drop constraint FK_APPARTIE_APPARTIEN_GROUPE;
+
+alter table APPARTIENT
+   drop constraint FK_APPARTIE_APPARTIEN_CLIENT;
+
+alter table FAIT_ETAPE
+   drop constraint FK_FAIT_ETA_FAIT_ETAP_CIRCUIT;
+
+alter table FAIT_ETAPE
+   drop constraint FK_FAIT_ETA_FAIT_ETAP_VILLE;
+
+alter table VOYAGE
+   drop constraint FK_VOYAGE_CONTIENT_CIRCUIT;
+
+alter table VOYAGE
+   drop constraint FK_VOYAGE_EST_INSCR_GROUPE;
+
+drop table APPARTIENT;
+
+drop table CIRCUIT;
+
+drop table CLIENT;
+
+drop table FAIT_ETAPE;
+
+drop table GROUPE;
+
+drop table VILLE;
+
+drop table VOYAGE;
+
+/*==============================================================*/
+/* Table : APPARTIENT                                           */
+/*==============================================================*/
+create table APPARTIENT
+(
+    NUMERO               INTEGER         not null,
+    NUMCLIENT            INTEGER         not null,
+constraint PK_APPARTIENT primary key (NUMERO, NUMCLIENT)
+);
+
+/*==============================================================*/
+/* Table : CIRCUIT                                              */
+/*==============================================================*/
+create table CIRCUIT
+(
+    REFERENCE            NOTE            not null,
+    NOM                  NOTE,
+constraint PK_CIRCUIT primary key (REFERENCE)
+);
+
+/*==============================================================*/
+/* Table : CLIENT                                               */
+/*==============================================================*/
+create table CLIENT
+(
+    NUMCLIENT            INTEGER         not null,
+    NOM                  NOTE,
+    PRENOM               NOTE,
+constraint PK_CLIENT primary key (NUMCLIENT)
+);
+
+/*==============================================================*/
+/* Table : FAIT_ETAPE                                           */
+/*==============================================================*/
+create table FAIT_ETAPE
+(
+    REFERENCE            NOTE            not null,
+    IDETAPE              INTEGER         not null,
+constraint PK_FAIT_ETAPE primary key (REFERENCE, IDETAPE)
+);
+
+/*==============================================================*/
+/* Table : GROUPE                                               */
+/*==============================================================*/
+create table GROUPE
+(
+    NUMERO               INTEGER         not null,
+    LIMITE               INTEGER,
+constraint PK_GROUPE primary key (NUMERO)
+);
+
+/*==============================================================*/
+/* Table : VILLE                                                */
+/*==============================================================*/
+create table VILLE
+(
+    IDETAPE              INTEGER         not null,
+    NOMVILLE             NOTE,
+    PAYS                 NOTE,
+    POPULATION           NOTE,
+constraint PK_VILLE primary key (IDETAPE)
+);
+
+/*==============================================================*/
+/* Table : VOYAGE                                               */
+/*==============================================================*/
+create table VOYAGE
+(
+    NUMVOYAGE            INTEGER         not null,
+    NUMERO               INTEGER         not null,
+    REFERENCE            NOTE            not null,
+    DEBUT                NOTE,
+    FIN                  NOTE,
+constraint PK_VOYAGE primary key (NUMVOYAGE)
+);
+
+alter table APPARTIENT
+   add constraint FK_APPARTIE_APPARTIEN_GROUPE foreign key (NUMERO)
+      references GROUPE (NUMERO);
+
+alter table APPARTIENT
+   add constraint FK_APPARTIE_APPARTIEN_CLIENT foreign key (NUMCLIENT)
+      references CLIENT (NUMCLIENT);
+
+alter table FAIT_ETAPE
+   add constraint FK_FAIT_ETA_FAIT_ETAP_CIRCUIT foreign key (REFERENCE)
+      references CIRCUIT (REFERENCE);
+
+alter table FAIT_ETAPE
+   add constraint FK_FAIT_ETA_FAIT_ETAP_VILLE foreign key (IDETAPE)
+      references VILLE (IDETAPE);
+
+alter table VOYAGE
+   add constraint FK_VOYAGE_CONTIENT_CIRCUIT foreign key (REFERENCE)
+      references CIRCUIT (REFERENCE);
+
+alter table VOYAGE
+   add constraint FK_VOYAGE_EST_INSCR_GROUPE foreign key (NUMERO)
+      references GROUPE (NUMERO);
+

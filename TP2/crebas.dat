@@ -1,0 +1,135 @@
+/*==============================================================*/
+/* Nom de SGBD :  Microsoft Access 2000                         */
+/* Date de création :  13/09/2017 11:31:58                      */
+/*==============================================================*/
+
+
+alter table ACHETE
+   drop constraint FK_ACHETE_ACHETE_STATUT;
+
+alter table ACHETE
+   drop constraint FK_ACHETE_ACHETE2_SAC;
+
+alter table CLIENT
+   drop constraint FK_CLIENT_EST_STATUT;
+
+alter table COMPOSE
+   drop constraint FK_COMPOSE_COMPOSE_SAC;
+
+alter table COMPOSE
+   drop constraint FK_COMPOSE_COMPOSE2_MATIERE;
+
+alter table COMPOSE
+   drop constraint FK_COMPOSE_COMPOSE3_MARQUE;
+
+drop table ACHETE;
+
+drop table CLIENT;
+
+drop table COMPOSE;
+
+drop table MARQUE;
+
+drop table MATIERE;
+
+drop table SAC;
+
+drop table STATUT;
+
+/*==============================================================*/
+/* Table : ACHETE                                               */
+/*==============================================================*/
+create table ACHETE
+(
+    SNO                  INTEGER         not null,
+    REF                  INTEGER         not null,
+    PRIX                 INTEGER,
+constraint PK_ACHETE primary key (SNO, REF)
+);
+
+/*==============================================================*/
+/* Table : CLIENT                                               */
+/*==============================================================*/
+create table CLIENT
+(
+    CNO                  INTEGER         not null,
+    SNO                  INTEGER         not null,
+    NOM                  NOTE,
+    ADRESSE              NOTE,
+constraint PK_CLIENT primary key (CNO)
+);
+
+/*==============================================================*/
+/* Table : COMPOSE                                              */
+/*==============================================================*/
+create table COMPOSE
+(
+    REF                  INTEGER         not null,
+    MNO                  INTEGER         not null,
+    REFMARQUE            INTEGER         not null,
+constraint PK_COMPOSE primary key (REF, MNO, REFMARQUE)
+);
+
+/*==============================================================*/
+/* Table : MARQUE                                               */
+/*==============================================================*/
+create table MARQUE
+(
+    REFMARQUE            INTEGER         not null,
+    MARQUE               NOTE,
+constraint PK_MARQUE primary key (REFMARQUE)
+);
+
+/*==============================================================*/
+/* Table : MATIERE                                              */
+/*==============================================================*/
+create table MATIERE
+(
+    MNO                  INTEGER         not null,
+    MATIERE              NOTE,
+constraint PK_MATIERE primary key (MNO)
+);
+
+/*==============================================================*/
+/* Table : SAC                                                  */
+/*==============================================================*/
+create table SAC
+(
+    REF                  INTEGER         not null,
+constraint PK_SAC primary key (REF)
+);
+
+/*==============================================================*/
+/* Table : STATUT                                               */
+/*==============================================================*/
+create table STATUT
+(
+    SNO                  INTEGER         not null,
+    INTITULE             NOTE,
+constraint PK_STATUT primary key (SNO)
+);
+
+alter table ACHETE
+   add constraint FK_ACHETE_ACHETE_STATUT foreign key (SNO)
+      references STATUT (SNO);
+
+alter table ACHETE
+   add constraint FK_ACHETE_ACHETE2_SAC foreign key (REF)
+      references SAC (REF);
+
+alter table CLIENT
+   add constraint FK_CLIENT_EST_STATUT foreign key (SNO)
+      references STATUT (SNO);
+
+alter table COMPOSE
+   add constraint FK_COMPOSE_COMPOSE_SAC foreign key (REF)
+      references SAC (REF);
+
+alter table COMPOSE
+   add constraint FK_COMPOSE_COMPOSE2_MATIERE foreign key (MNO)
+      references MATIERE (MNO);
+
+alter table COMPOSE
+   add constraint FK_COMPOSE_COMPOSE3_MARQUE foreign key (REFMARQUE)
+      references MARQUE (REFMARQUE);
+
